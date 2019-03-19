@@ -2607,6 +2607,7 @@ extern "C"
 
 	BINARYNINJACOREAPI BNFunction* BNGetBasicBlockFunction(BNBasicBlock* block);
 	BINARYNINJACOREAPI BNArchitecture* BNGetBasicBlockArchitecture(BNBasicBlock* block);
+	BINARYNINJACOREAPI BNBasicBlock* BNGetBasicBlockSource(BNBasicBlock* block);
 	BINARYNINJACOREAPI uint64_t BNGetBasicBlockStart(BNBasicBlock* block);
 	BINARYNINJACOREAPI uint64_t BNGetBasicBlockEnd(BNBasicBlock* block);
 	BINARYNINJACOREAPI uint64_t BNGetBasicBlockLength(BNBasicBlock* block);
@@ -2984,6 +2985,7 @@ extern "C"
 	BINARYNINJACOREAPI uint64_t BNLowLevelILGetCurrentAddress(BNLowLevelILFunction* func);
 	BINARYNINJACOREAPI void BNLowLevelILSetCurrentAddress(BNLowLevelILFunction* func,
 		BNArchitecture* arch, uint64_t addr);
+	BINARYNINJACOREAPI void BNLowLevelILSetCurrentSourceBlock(BNLowLevelILFunction* func, BNBasicBlock* source);
 	BINARYNINJACOREAPI size_t BNLowLevelILGetInstructionStart(BNLowLevelILFunction* func,
 		BNArchitecture* arch, uint64_t addr);
 	BINARYNINJACOREAPI void BNLowLevelILClearIndirectBranches(BNLowLevelILFunction* func);

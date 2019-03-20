@@ -210,39 +210,29 @@ class KaitaiViewType(ViewType):
 
 	# binaryView:		BinaryView
 	def getPriority(self, binaryView, filename):
-		# data.file:	FileMetadata
-		# data.raw:		BinaryView
+		#print('len(bv)=0x%X executable=%d bytes=%s' % (len(binaryView), binaryView.executable, repr(binaryView.read(0,4))))
 
-		priority = 0
-		isExec = binaryView.executable
-		weRecognize = kshelpers.idData(binaryView.read(0,16), len(binaryView)) != None
-			
+		# executable means the view is mapped like an OS loader would load an executable (eg: view=ELF)
+		# !executable means executable image is not mapped (eg: view=Raw) (or something like .png is loaded)
+		if binaryView.executable:
+			return 0
+
+		if binaryView.start != 0:
+			return 0
+
+		if os.path.getsize(binaryView.file.filename) != len(binaryView):
+			return 0
+
+		dataSample = binaryView.read(0, 16)
+		if len(dataSample) != 16:
+			return 0
+
 		# NOTE: ui/shared/hexeditor.cpp has the hex editor at priority 20 when
 		# executable, and 10 otherwise
-
-		if not weRecognize:
-			priority = 0
+		if kshelpers.idData(dataSample, len(binaryView)):
+			return 21
 		else:
-			if isExec:
-				priority = 21
-			else:
-				priority = 11
-
-#		if isExec and weRecognize:
-#			print('priority=25 to slightly beat out the hex editor case=(executable, recognize)')
-#			priority = 25
-#		if isExec and not weRecognize:
-#			print('priority=15 to lose to the hex editor case=(executable, !recognize)')
-#			priority = 15
-#		if not isExec and weRecognize:
-#			print('priority=100 to beat out everything case=(!executable, recognize)')
-#			priority = 100
-#		if not isExec and not weRecognize:
-#			print('priority=5 to lose to hex editor case=(!executable, !recognize)')
-#			priority = 5
-			
-		#print('returning priority=%d for KaitaiViewType' % priority)
-		return priority
+			return 0
 
 	def create(self, binaryView, view_frame):
 		return KaitaiView(view_frame, binaryView)

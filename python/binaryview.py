@@ -179,7 +179,7 @@ class AnalysisCompletionEvent(object):
 		if id(self) in _pending_analysis_completion_events:
 			del _pending_analysis_completion_events[id(self)]
 		try:
-			self.callback(self)
+			self._callback(self)
 		except:
 			log.log_error(traceback.format_exc())
 
@@ -269,7 +269,7 @@ class AnalysisInfo(object):
 		self._active_info = active_info
 
 	def __repr__(self):
-		return "<AnalysisInfo %s, analysis_time %d, active_info %s>" % (self.state, self.analysis_time, self.active_info)
+		return "<AnalysisInfo %s, analysis_time %d, active_info %s>" % (self.state, self._analysis_time, self._active_info)
 
 	@property
 	def state(self):
@@ -716,10 +716,6 @@ class Segment(object):
 		return (core.BNSegmentGetFlags(self.handle) & SegmentFlag.SegmentReadable) != 0
 
 	@property
-	def end(self):
-		return core.BNSegmentGetEnd(self.handle)
-
-	@property
 	def data_length(self):
 		return core.BNSegmentGetDataLength(self.handle)
 
@@ -945,7 +941,7 @@ class BinaryView(object):
 	_registered = False
 	_registered_cb = None
 	registered_view_type = None
-	next_address = 0
+	_next_address = 0
 	_associated_data = {}
 	_registered_instances = []
 
@@ -1347,7 +1343,7 @@ class BinaryView(object):
 		result = []
 		for i in range(count.value):
 			result.append(types.NameSpace._from_core_struct(nameSpaceList[i]))
-		core.BNFreeNameSpaceList(nameSpaceList, count.value);
+		core.BNFreeNameSpaceList(nameSpaceList, count.value)
 		return result
 
 	@property
@@ -1795,7 +1791,7 @@ class BinaryView(object):
 		if arch is None:
 			arch = self.arch
 		txt, size = arch.get_instruction_text(self.read(addr, arch.max_instr_length), addr)
-		self.next_address = addr + size
+		self._next_address = addr + size
 		if txt is None:
 			return None
 		return ''.join(str(a) for a in txt).strip()
@@ -1822,10 +1818,10 @@ class BinaryView(object):
 		"""
 		if arch is None:
 			arch = self.arch
-		if self.next_address is None:
-			self.next_address = self.entry_point
-		txt, size = arch.get_instruction_text(self.read(self.next_address, arch.max_instr_length), self.next_address)
-		self.next_address += size
+		if self._next_address is None:
+			self._next_address = self.entry_point
+		txt, size = arch.get_instruction_text(self.read(self._next_address, arch.max_instr_length), self._next_address)
+		self._next_address += size
 		if txt is None:
 			return None
 		return ''.join(str(a) for a in txt).strip()
@@ -3003,7 +2999,7 @@ class BinaryView(object):
 		:rtype: None
 		"""
 		if plat is None:
-			plat = self.plat
+			plat = self.platform
 		if plat is not None:
 			plat = plat.handle
 		if sym_type is not None:
@@ -4351,7 +4347,7 @@ class BinaryView(object):
 		Evaluates an string expression to an integer value.
 
 		The parser uses the following rules:
-			- symbols are defined by the lexer as `[A-Za-z0-9_:<>][A-Za-z0-9_:$\-<>]+` or anything enclosed in either single or
+			- symbols are defined by the lexer as `[A-Za-z0-9_:<>][A-Za-z0-9_:$\\-<>]+` or anything enclosed in either single or
 		      double quotes
 			- Numbers are defaulted to hexadecimal thus `_printf + 10` is equivalent to `printf + 0x10` If decimal numbers required use the decimal prefix.
 			- Since numbers and symbols can be ambiguous its recommended that you prefix your numbers with the following:

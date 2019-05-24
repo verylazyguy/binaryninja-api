@@ -5,10 +5,10 @@
 #include "theme.h"
 
 
-EntropyThread::EntropyThread(BinaryViewRef data, int width, size_t blockSize)
+EntropyThread::EntropyThread(BinaryViewRef data, int width, size_t blockSize, QImage* image)
 {
 	m_data = data;
-	m_image = QImage(width, 1, QImage::Format_ARGB32);
+	m_image = image;
 	m_blockSize = blockSize;
 	m_updated = false;
 	m_running = true;
@@ -25,7 +25,7 @@ EntropyThread::~EntropyThread()
 
 void EntropyThread::Run()
 {
-	int width = m_image.width();
+	int width = m_image->width();
 	for (int i = 0; i < width; i++)
 	{
 		if (!m_running)
@@ -36,20 +36,34 @@ void EntropyThread::Run()
 			v = 0;
 		else
 			v = (int)(entropy[0] * 255);
+		m_mutex.lock();
 		if (v >= 240)
 		{
 			QColor color = getThemeColor(YellowStandardHighlightColor);
-			m_image.setPixelColor(i, 0, color);
+			m_image->setPixelColor(i, 0, color);
 		}
 		else
 		{
 			QColor baseColor = getThemeColor(FeatureMapBaseColor);
 			QColor entropyColor = getThemeColor(BlueStandardHighlightColor);
 			QColor color = mixColor(baseColor, entropyColor, (uint8_t)v);
-			m_image.setPixelColor(i, 0, color);
+			m_image->setPixelColor(i, 0, color);
 		}
 		m_updated = true;
+		m_mutex.unlock();
 	}
+}
+
+
+void EntropyThread::Lock()
+{
+	m_mutex.lock();
+}
+
+
+void EntropyThread::Unlock()
+{
+	m_mutex.unlock();
 }
 
 
@@ -61,7 +75,8 @@ EntropyWidget::EntropyWidget(QWidget* parent, TriageView* view, BinaryViewRef da
 
 	m_blockSize = 1024;
 	m_width = (int)(m_rawData->GetLength() / (uint64_t)m_blockSize);
-	m_thread = new EntropyThread(m_rawData, m_width, m_blockSize);
+	m_image = QImage(m_width, 1, QImage::Format_ARGB32);
+	m_thread = new EntropyThread(m_rawData, m_width, m_blockSize, &m_image);
 
 	QTimer* timer = new QTimer();
 	connect(timer, &QTimer::timeout, this, &EntropyWidget::timerExpired);
@@ -82,7 +97,9 @@ EntropyWidget::~EntropyWidget()
 void EntropyWidget::paintEvent(QPaintEvent*)
 {
 	QPainter p(this);
-	p.drawImage(rect(), m_thread->GetImage());
+	m_thread->Lock();
+	p.drawImage(rect(), m_image);
+	m_thread->Unlock();
 	p.drawRect(rect());
 }
 

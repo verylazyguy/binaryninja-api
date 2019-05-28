@@ -1105,12 +1105,14 @@ namespace BinaryNinja
 	};
 
 
+	class Tag;
 	struct DisassemblyTextLine
 	{
 		uint64_t addr;
 		size_t instrIndex;
 		std::vector<InstructionTextToken> tokens;
 		BNHighlightColor highlight;
+		std::vector<Ref<Tag>> tags;
 
 		DisassemblyTextLine();
 	};
@@ -2573,6 +2575,21 @@ namespace BinaryNinja
 
 		static PossibleValueSet FromAPIObject(BNPossibleValueSet& value);
 	};
+	
+	class Tag: public CoreRefCountObject<BNTag, BNNewTagReference, BNFreeTag>
+	{
+	public:
+		Tag(BNTag* tag);
+		Tag();
+		
+		std::string GetData() const;
+		void SetData(const std::string& data);
+		uint32_t GetIcon() const;
+		void SetIcon(uint32_t);
+
+		static BNTag** CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count);
+		static std::vector<Ref<Tag>> ConvertTagList(BNTag** tags, size_t count);
+	};
 
 	class FlowGraph;
 	class MediumLevelILFunction;
@@ -2729,6 +2746,18 @@ namespace BinaryNinja
 			BNHighlightStandardColor mixColor, uint8_t mix, uint8_t alpha = 255);
 		void SetUserInstructionHighlight(Architecture* arch, uint64_t addr, uint8_t r, uint8_t g, uint8_t b,
 			uint8_t alpha = 255);
+
+		std::vector<Ref<Tag>> GetAddressTags(Architecture* arch, uint64_t addr);
+		void AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		
+		std::vector<Ref<Tag>> GetFunctionTags(Architecture* arch);
+		void AddAutoFunctionTag(Architecture* arch, Ref<Tag> tag);
+		void RemoveAutoFunctionTag(Architecture* arch, Ref<Tag> tag);
+		void AddUserFunctionTag(Architecture* arch, Ref<Tag> tag);
+		void RemoveUserFunctionTag(Architecture* arch, Ref<Tag> tag);
 
 		void Reanalyze();
 

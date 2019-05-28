@@ -298,6 +298,62 @@ void AnalysisCompletionEvent::Cancel()
 }
 
 
+Tag::Tag(BNTag* tag)
+{
+	m_object = tag;
+}
+
+
+Tag::Tag()
+{
+	m_object = BNCreateTag();
+}
+
+
+std::string Tag::GetData() const
+{
+	return BNGetTagData(m_object);
+}
+
+
+void Tag::SetData(const std::string& data)
+{
+	BNSetTagData(m_object, data.c_str());
+}
+
+
+uint32_t Tag::GetIcon() const
+{
+	return BNGetTagIcon(m_object);
+}
+
+
+void Tag::SetIcon(uint32_t icon)
+{
+	BNSetTagIcon(m_object, icon);
+}
+
+
+BNTag** Tag::CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count)
+{
+	*count = tags.size();
+	BNTag** result = new BNTag*[tags.size()];
+	for (size_t i = 0; i < tags.size(); i++)
+		result[i] = tags[i]->GetObject();
+	return result;
+}
+
+
+std::vector<Ref<Tag>> Tag::ConvertTagList(BNTag** tags, size_t count)
+{
+	std::vector<Ref<Tag>> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i++)
+		result.emplace_back(new Tag(tags[i]));
+	return result;
+}
+
+
 Segment::Segment(BNSegment* seg)
 {
 	m_object = seg;

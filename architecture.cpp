@@ -2277,6 +2277,7 @@ bool DisassemblyTextRenderer::GetDisassemblyText(uint64_t addr, size_t& len, vec
 		line.instrIndex = result[i].instrIndex;
 		line.highlight = result[i].highlight;
 		line.tokens = InstructionTextToken::ConvertAndFreeInstructionTextTokenList(result[i].tokens, result[i].count);
+		line.tags = Tag::ConvertTagList(result[i].tags, result[i].tagCount);
 		lines.push_back(line);
 	}
 
@@ -2360,6 +2361,7 @@ void DisassemblyTextRenderer::WrapComment(DisassemblyTextLine& line, vector<Disa
 	inLine.highlight = line.highlight;
 	inLine.count = line.tokens.size();
 	inLine.tokens = InstructionTextToken::CreateInstructionTextTokenList(line.tokens);
+	inLine.tags = Tag::CreateTagList(line.tags, &inLine.tagCount);
 
 	size_t count = 0;
 	BNDisassemblyTextLine* result = BNDisassemblyTextRendererWrapComment(m_object, &inLine, &count,
@@ -2376,12 +2378,5 @@ void DisassemblyTextRenderer::WrapComment(DisassemblyTextLine& line, vector<Disa
 	}
 
 	BNFreeDisassemblyTextLines(result, count);
-	for (size_t i = 0; i < inLine.count; i++)
-	{
-		BNFreeString(inLine.tokens[i].text);
-		for (size_t j = 0; j < inLine.tokens[j].namesCount; j++)
-			BNFreeString(inLine.tokens[i].typeNames[j]);
-		delete[] inLine.tokens[i].typeNames;
-	}
-	delete[] inLine.tokens;
+	BNFreeInstructionText(inLine.tokens, inLine.count);
 }

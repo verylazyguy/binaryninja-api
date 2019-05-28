@@ -322,15 +322,15 @@ void Tag::SetData(const std::string& data)
 }
 
 
-uint32_t Tag::GetIcon() const
+std::string Tag::GetIcon() const
 {
 	return BNGetTagIcon(m_object);
 }
 
 
-void Tag::SetIcon(uint32_t icon)
+void Tag::SetIcon(const std::string& icon)
 {
-	BNSetTagIcon(m_object, icon);
+	BNSetTagIcon(m_object, icon.c_str());
 }
 
 

@@ -2886,8 +2886,8 @@ extern "C"
 	BINARYNINJACOREAPI void BNFreeTag(BNTag* tag);
 	BINARYNINJACOREAPI char* BNGetTagData(BNTag* tag);
 	BINARYNINJACOREAPI void BNSetTagData(BNTag* tag, const char* data);
-	BINARYNINJACOREAPI uint32_t BNGetTagIcon(BNTag* tag);
-	BINARYNINJACOREAPI void BNSetTagIcon(BNTag* tag, uint32_t icon);
+	BINARYNINJACOREAPI char* BNGetTagIcon(BNTag* tag);
+	BINARYNINJACOREAPI void BNSetTagIcon(BNTag* tag, const char* icon);
 	
 	BINARYNINJACOREAPI BNTag** BNGetAddressTags(BNFunction* func, BNArchitecture* arch, uint64_t addr, size_t* count);
 	BINARYNINJACOREAPI void BNAddAutoAddressTag(BNFunction* func, BNArchitecture* arch, uint64_t addr, BNTag* tag);

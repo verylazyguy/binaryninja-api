@@ -55,6 +55,7 @@ typedef BinaryNinja::Ref<BinaryNinja::Section> SectionRef;
 typedef BinaryNinja::Ref<BinaryNinja::Segment> SegmentRef;
 typedef BinaryNinja::Ref<BinaryNinja::Structure> StructureRef;
 typedef BinaryNinja::Ref<BinaryNinja::Symbol> SymbolRef;
+typedef BinaryNinja::Ref<BinaryNinja::Tag> TagRef;
 typedef BinaryNinja::Ref<BinaryNinja::TemporaryFile> TemporaryFileRef;
 typedef BinaryNinja::Ref<BinaryNinja::Transform> TransformRef;
 typedef BinaryNinja::Ref<BinaryNinja::Type> TypeRef;

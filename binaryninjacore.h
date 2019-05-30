@@ -136,6 +136,7 @@ extern "C"
 	struct BNMediumLevelILFunction;
 	struct BNType;
 	struct BNStructure;
+	struct BNTagType;
 	struct BNTag;
 	struct BNNamedTypeReference;
 	struct BNEnumeration;
@@ -2881,6 +2882,14 @@ extern "C"
 	BINARYNINJACOREAPI void BNSetAutoBasicBlockHighlight(BNBasicBlock* block, BNHighlightColor color);
 	BINARYNINJACOREAPI void BNSetUserBasicBlockHighlight(BNBasicBlock* block, BNHighlightColor color);
 
+	BINARYNINJACOREAPI BNTagType* BNCreateTagType();
+	BINARYNINJACOREAPI BNTagType* BNNewTagTypeReference(BNTagType* tagType);
+	BINARYNINJACOREAPI void BNFreeTagType(BNTagType* tagType);
+	BINARYNINJACOREAPI char* BNGetTagTypeName(BNTagType* tagType);
+	BINARYNINJACOREAPI void BNSetTagTypeName(BNTagType* tagType, const char* name);
+	BINARYNINJACOREAPI char* BNGetTagTypeIcon(BNTagType* tagType);
+	BINARYNINJACOREAPI void BNSetTagTypeIcon(BNTagType* tagType, const char* icon);
+	
 	BINARYNINJACOREAPI BNTag* BNCreateTag();
 	BINARYNINJACOREAPI BNTag* BNNewTagReference(BNTag* tag);
 	BINARYNINJACOREAPI void BNFreeTag(BNTag* tag);
@@ -3035,6 +3044,11 @@ extern "C"
 
 	BINARYNINJACOREAPI BNSymbol* BNImportedFunctionFromImportAddressSymbol(BNSymbol* sym, uint64_t addr);
 
+	BINARYNINJACOREAPI void BNAddTagType(BNBinaryView* view, BNTagType* tagType);
+	BINARYNINJACOREAPI void BNRemoveTagType(BNBinaryView* view, BNTagType* tagType);
+	BINARYNINJACOREAPI BNTagType* BNGetTagType(BNBinaryView* view, const char* name);
+	BINARYNINJACOREAPI BNTagType** BNGetTagTypes(BNBinaryView* view, size_t* count);
+	
 	// Low-level IL
 	BINARYNINJACOREAPI BNLowLevelILFunction* BNCreateLowLevelILFunction(BNArchitecture* arch, BNFunction* func);
 	BINARYNINJACOREAPI BNLowLevelILFunction* BNNewLowLevelILFunctionReference(BNLowLevelILFunction* func);

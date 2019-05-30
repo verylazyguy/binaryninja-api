@@ -298,6 +298,42 @@ void AnalysisCompletionEvent::Cancel()
 }
 
 
+TagType::TagType(BNTagType* tagType)
+{
+	m_object = tagType;
+}
+
+
+TagType::TagType()
+{
+	m_object = BNCreateTagType();
+}
+
+
+std::string TagType::GetName() const
+{
+	return BNGetTagTypeName(m_object);
+}
+
+
+void TagType::SetName(const std::string& name)
+{
+	BNSetTagTypeName(m_object, name.c_str());
+}
+
+
+std::string TagType::GetIcon() const
+{
+	return BNGetTagTypeIcon(m_object);
+}
+
+
+void TagType::SetIcon(const std::string& icon)
+{
+	BNSetTagTypeIcon(m_object, icon.c_str());
+}
+
+
 Tag::Tag(BNTag* tag)
 {
 	m_object = tag;
@@ -1722,6 +1758,43 @@ void BinaryView::UndefineUserSymbol(Ref<Symbol> sym)
 void BinaryView::DefineImportedFunction(Ref<Symbol> importAddressSym, Ref<Function> func)
 {
 	BNDefineImportedFunction(m_object, importAddressSym->GetObject(), func->GetObject());
+}
+
+
+void BinaryView::AddTagType(Ref<TagType> tagType)
+{
+	BNAddTagType(m_object, tagType->GetObject());
+}
+
+
+void BinaryView::RemoveTagType(Ref<TagType> tagType)
+{
+	BNRemoveTagType(m_object, tagType->GetObject());
+}
+
+
+Ref<TagType> BinaryView::GetTagType(const std::string& name)
+{
+	BNTagType* tagType = BNGetTagType(m_object, name.c_str());
+	if (!tagType)
+		return nullptr;
+	
+	return Ref<TagType>(new TagType(tagType));
+}
+
+
+std::vector<Ref<TagType>> BinaryView::GetTagTypes()
+{
+	size_t count;
+	BNTagType** tagTypes = BNGetTagTypes(m_object, &count);
+	
+	std::vector<Ref<TagType>> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++) {
+		result.push_back(new TagType(tagTypes[i]));
+	}
+	
+	return result;
 }
 
 

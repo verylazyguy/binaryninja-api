@@ -1177,6 +1177,18 @@ namespace BinaryNinja
 		Confidence<Ref<Type>> type;
 		bool autoDiscovered;
 	};
+	
+	class TagType: public CoreRefCountObject<BNTagType, BNNewTagTypeReference, BNFreeTagType>
+	{
+	public:
+		TagType(BNTagType* tagType);
+		TagType();
+		
+		std::string GetName() const;
+		void SetName(const std::string& name);
+		std::string GetIcon() const;
+		void SetIcon(const std::string& icon);
+	};
 
 	class Relocation;
 	class Segment: public CoreRefCountObject<BNSegment, BNNewSegmentReference, BNFreeSegment>
@@ -1444,6 +1456,11 @@ namespace BinaryNinja
 
 		void DefineImportedFunction(Ref<Symbol> importAddressSym, Ref<Function> func);
 
+		void AddTagType(Ref<TagType> tagType);
+		void RemoveTagType(Ref<TagType> tagType);
+		Ref<TagType> GetTagType(const std::string& name);
+		std::vector<Ref<TagType>> GetTagTypes();
+		
 		bool IsNeverBranchPatchAvailable(Architecture* arch, uint64_t addr);
 		bool IsAlwaysBranchPatchAvailable(Architecture* arch, uint64_t addr);
 		bool IsInvertBranchPatchAvailable(Architecture* arch, uint64_t addr);

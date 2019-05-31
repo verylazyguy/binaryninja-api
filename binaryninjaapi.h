@@ -2597,12 +2597,12 @@ namespace BinaryNinja
 	{
 	public:
 		Tag(BNTag* tag);
-		Tag();
+		Tag(Ref<TagType> type);
 		
+		Ref<TagType> GetType() const;
+		void SetType(Ref<TagType> type);
 		std::string GetData() const;
 		void SetData(const std::string& data);
-		std::string GetIcon() const;
-		void SetIcon(const std::string& data);
 
 		static BNTag** CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count);
 		static std::vector<Ref<Tag>> ConvertTagList(BNTag** tags, size_t count);

@@ -340,9 +340,21 @@ Tag::Tag(BNTag* tag)
 }
 
 
-Tag::Tag()
+Tag::Tag(Ref<TagType> type)
 {
-	m_object = BNCreateTag();
+	m_object = BNCreateTag(type->GetObject());
+}
+
+
+Ref<TagType> Tag::GetType() const
+{
+	return new TagType(BNGetTagType(m_object));
+}
+
+
+void Tag::SetType(Ref<TagType> type)
+{
+	BNSetTagType(m_object, type->GetObject());
 }
 
 
@@ -355,18 +367,6 @@ std::string Tag::GetData() const
 void Tag::SetData(const std::string& data)
 {
 	BNSetTagData(m_object, data.c_str());
-}
-
-
-std::string Tag::GetIcon() const
-{
-	return BNGetTagIcon(m_object);
-}
-
-
-void Tag::SetIcon(const std::string& icon)
-{
-	BNSetTagIcon(m_object, icon.c_str());
 }
 
 
@@ -1763,19 +1763,19 @@ void BinaryView::DefineImportedFunction(Ref<Symbol> importAddressSym, Ref<Functi
 
 void BinaryView::AddTagType(Ref<TagType> tagType)
 {
-	BNAddTagType(m_object, tagType->GetObject());
+	BNViewAddTagType(m_object, tagType->GetObject());
 }
 
 
 void BinaryView::RemoveTagType(Ref<TagType> tagType)
 {
-	BNRemoveTagType(m_object, tagType->GetObject());
+	BNViewRemoveTagType(m_object, tagType->GetObject());
 }
 
 
 Ref<TagType> BinaryView::GetTagType(const std::string& name)
 {
-	BNTagType* tagType = BNGetTagType(m_object, name.c_str());
+	BNTagType* tagType = BNViewGetTagType(m_object, name.c_str());
 	if (!tagType)
 		return nullptr;
 	
@@ -1786,7 +1786,7 @@ Ref<TagType> BinaryView::GetTagType(const std::string& name)
 std::vector<Ref<TagType>> BinaryView::GetTagTypes()
 {
 	size_t count;
-	BNTagType** tagTypes = BNGetTagTypes(m_object, &count);
+	BNTagType** tagTypes = BNViewGetTagTypes(m_object, &count);
 	
 	std::vector<Ref<TagType>> result;
 	result.reserve(count);

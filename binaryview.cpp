@@ -312,25 +312,25 @@ TagType::TagType()
 
 std::string TagType::GetName() const
 {
-	return BNGetTagTypeName(m_object);
+	return BNTagTypeGetName(m_object);
 }
 
 
 void TagType::SetName(const std::string& name)
 {
-	BNSetTagTypeName(m_object, name.c_str());
+	BNTagTypeSetName(m_object, name.c_str());
 }
 
 
 std::string TagType::GetIcon() const
 {
-	return BNGetTagTypeIcon(m_object);
+	return BNTagTypeGetIcon(m_object);
 }
 
 
 void TagType::SetIcon(const std::string& icon)
 {
-	BNSetTagTypeIcon(m_object, icon.c_str());
+	BNTagTypeSetIcon(m_object, icon.c_str());
 }
 
 
@@ -348,25 +348,25 @@ Tag::Tag(Ref<TagType> type)
 
 Ref<TagType> Tag::GetType() const
 {
-	return new TagType(BNGetTagType(m_object));
+	return new TagType(BNTagGetType(m_object));
 }
 
 
 void Tag::SetType(Ref<TagType> type)
 {
-	BNSetTagType(m_object, type->GetObject());
+	BNTagSetType(m_object, type->GetObject());
 }
 
 
 std::string Tag::GetData() const
 {
-	return BNGetTagData(m_object);
+	return BNTagGetData(m_object);
 }
 
 
 void Tag::SetData(const std::string& data)
 {
-	BNSetTagData(m_object, data.c_str());
+	BNTagSetData(m_object, data.c_str());
 }
 
 
@@ -1763,19 +1763,19 @@ void BinaryView::DefineImportedFunction(Ref<Symbol> importAddressSym, Ref<Functi
 
 void BinaryView::AddTagType(Ref<TagType> tagType)
 {
-	BNViewAddTagType(m_object, tagType->GetObject());
+	BNAddTagType(m_object, tagType->GetObject());
 }
 
 
 void BinaryView::RemoveTagType(Ref<TagType> tagType)
 {
-	BNViewRemoveTagType(m_object, tagType->GetObject());
+	BNRemoveTagType(m_object, tagType->GetObject());
 }
 
 
 Ref<TagType> BinaryView::GetTagType(const std::string& name)
 {
-	BNTagType* tagType = BNViewGetTagType(m_object, name.c_str());
+	BNTagType* tagType = BNGetTagType(m_object, name.c_str());
 	if (!tagType)
 		return nullptr;
 	
@@ -1786,7 +1786,7 @@ Ref<TagType> BinaryView::GetTagType(const std::string& name)
 std::vector<Ref<TagType>> BinaryView::GetTagTypes()
 {
 	size_t count;
-	BNTagType** tagTypes = BNViewGetTagTypes(m_object, &count);
+	BNTagType** tagTypes = BNGetTagTypes(m_object, &count);
 	
 	std::vector<Ref<TagType>> result;
 	result.reserve(count);

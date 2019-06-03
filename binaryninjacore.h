@@ -2885,18 +2885,18 @@ extern "C"
 	BINARYNINJACOREAPI BNTagType* BNCreateTagType();
 	BINARYNINJACOREAPI BNTagType* BNNewTagTypeReference(BNTagType* tagType);
 	BINARYNINJACOREAPI void BNFreeTagType(BNTagType* tagType);
-	BINARYNINJACOREAPI char* BNGetTagTypeName(BNTagType* tagType);
-	BINARYNINJACOREAPI void BNSetTagTypeName(BNTagType* tagType, const char* name);
-	BINARYNINJACOREAPI char* BNGetTagTypeIcon(BNTagType* tagType);
-	BINARYNINJACOREAPI void BNSetTagTypeIcon(BNTagType* tagType, const char* icon);
+	BINARYNINJACOREAPI char* BNTagTypeGetName(BNTagType* tagType);
+	BINARYNINJACOREAPI void BNTagTypeSetName(BNTagType* tagType, const char* name);
+	BINARYNINJACOREAPI char* BNTagTypeGetIcon(BNTagType* tagType);
+	BINARYNINJACOREAPI void BNTagTypeSetIcon(BNTagType* tagType, const char* icon);
 	
 	BINARYNINJACOREAPI BNTag* BNCreateTag(BNTagType* type);
 	BINARYNINJACOREAPI BNTag* BNNewTagReference(BNTag* tag);
 	BINARYNINJACOREAPI void BNFreeTag(BNTag* tag);
-	BINARYNINJACOREAPI BNTagType* BNGetTagType(BNTag* tag);
-	BINARYNINJACOREAPI void BNSetTagType(BNTag* tag, BNTagType* type);
-	BINARYNINJACOREAPI char* BNGetTagData(BNTag* tag);
-	BINARYNINJACOREAPI void BNSetTagData(BNTag* tag, const char* data);
+	BINARYNINJACOREAPI BNTagType* BNTagGetType(BNTag* tag);
+	BINARYNINJACOREAPI void BNTagSetType(BNTag* tag, BNTagType* type);
+	BINARYNINJACOREAPI char* BNTagGetData(BNTag* tag);
+	BINARYNINJACOREAPI void BNTagSetData(BNTag* tag, const char* data);
 	
 	BINARYNINJACOREAPI BNTag** BNGetAddressTags(BNFunction* func, BNArchitecture* arch, uint64_t addr, size_t* count);
 	BINARYNINJACOREAPI void BNAddAutoAddressTag(BNFunction* func, BNArchitecture* arch, uint64_t addr, BNTag* tag);
@@ -3044,10 +3044,10 @@ extern "C"
 
 	BINARYNINJACOREAPI BNSymbol* BNImportedFunctionFromImportAddressSymbol(BNSymbol* sym, uint64_t addr);
 
-	BINARYNINJACOREAPI void BNViewAddTagType(BNBinaryView* view, BNTagType* tagType);
-	BINARYNINJACOREAPI void BNViewRemoveTagType(BNBinaryView* view, BNTagType* tagType);
-	BINARYNINJACOREAPI BNTagType* BNViewGetTagType(BNBinaryView* view, const char* name);
-	BINARYNINJACOREAPI BNTagType** BNViewGetTagTypes(BNBinaryView* view, size_t* count);
+	BINARYNINJACOREAPI void BNAddTagType(BNBinaryView* view, BNTagType* tagType);
+	BINARYNINJACOREAPI void BNRemoveTagType(BNBinaryView* view, BNTagType* tagType);
+	BINARYNINJACOREAPI BNTagType* BNGetTagType(BNBinaryView* view, const char* name);
+	BINARYNINJACOREAPI BNTagType** BNGetTagTypes(BNBinaryView* view, size_t* count);
 	
 	// Low-level IL
 	BINARYNINJACOREAPI BNLowLevelILFunction* BNCreateLowLevelILFunction(BNArchitecture* arch, BNFunction* func);

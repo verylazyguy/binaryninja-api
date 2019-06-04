@@ -30,6 +30,7 @@ from binaryninja import associateddatastore  # Required in the main scope due to
 from binaryninja import highlight
 from binaryninja import log
 from binaryninja import types
+from binaryninja import binaryview
 from binaryninja.enums import (AnalysisSkipReason, FunctionGraphType, BranchType, SymbolType, InstructionTextTokenType,
 	HighlightStandardColor, HighlightColorStyle, RegisterValueType, ImplicitRegisterExtend,
 	DisassemblyOption, IntegerDisplayType, InstructionTextTokenContext, VariableSourceType,
@@ -1845,6 +1846,78 @@ class Function(object):
 		if isinstance(color, HighlightStandardColor):
 			color = highlight.HighlightColor(color)
 		core.BNSetUserInstructionHighlight(self.handle, arch.handle, addr, color._get_core_struct())
+
+	def address_tags(self, addr, arch=None):
+		if arch is None:
+			arch = self.arch
+
+		count = ctypes.c_ulonglong()
+		tags = core.BNGetAddressTags(self.handle, arch.handle, addr, count)
+		result = []
+		for i in range(0, count.value):
+			result.append(binaryninja.binaryview.Tag(core.BNNewTagReference(tags[i])))
+		core.BNFreeTagList(tags, count.value)
+		return result
+
+	def add_user_address_tag(self, addr, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNAddUserAddressTag(self.handle, arch.handle, addr, tag.handle)
+
+	def remove_user_address_tag(self, addr, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNRemoveUserAddressTag(self.handle, arch.handle, addr, tag.handle)
+
+	def add_auto_address_tag(self, addr, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNAddAutoAddressTag(self.handle, arch.handle, addr, tag.handle)
+
+	def remove_auto_address_tag(self, addr, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNRemoveAutoAddressTag(self.handle, arch.handle, addr, tag.handle)
+
+	def function_tags(self, arch=None):
+		if arch is None:
+			arch = self.arch
+
+		count = ctypes.c_ulonglong()
+		tags = core.BNGetFunctionTags(self.handle, arch.handle, count)
+		result = []
+		for i in range(0, count.value):
+			result.append(binaryninja.binaryview.Tag(core.BNNewTagReference(tags[i])))
+		core.BNFreeTagList(tags, count.value)
+		return result
+
+	def add_user_function_tag(self, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNAddUserFunctionTag(self.handle, arch.handle, tag.handle)
+
+	def remove_user_function_tag(self, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNRemoveUserFunctionTag(self.handle, arch.handle, tag.handle)
+
+	def add_auto_function_tag(self, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNAddAutoFunctionTag(self.handle, arch.handle, tag.handle)
+
+	def remove_auto_function_tag(self, tag, arch=None):
+		if arch is None:
+			arch = self.arch
+		
+		core.BNRemoveAutoFunctionTag(self.handle, arch.handle, tag.handle)
 
 	def create_auto_stack_var(self, offset, var_type, name):
 		tc = core.BNTypeWithConfidence()

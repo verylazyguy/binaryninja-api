@@ -2885,6 +2885,7 @@ extern "C"
 	BINARYNINJACOREAPI BNTagType* BNCreateTagType();
 	BINARYNINJACOREAPI BNTagType* BNNewTagTypeReference(BNTagType* tagType);
 	BINARYNINJACOREAPI void BNFreeTagType(BNTagType* tagType);
+	BINARYNINJACOREAPI void BNFreeTagTypeList(BNTagType** tagTypes, size_t count);
 	BINARYNINJACOREAPI char* BNTagTypeGetName(BNTagType* tagType);
 	BINARYNINJACOREAPI void BNTagTypeSetName(BNTagType* tagType, const char* name);
 	BINARYNINJACOREAPI char* BNTagTypeGetIcon(BNTagType* tagType);
@@ -2893,6 +2894,7 @@ extern "C"
 	BINARYNINJACOREAPI BNTag* BNCreateTag(BNTagType* type);
 	BINARYNINJACOREAPI BNTag* BNNewTagReference(BNTag* tag);
 	BINARYNINJACOREAPI void BNFreeTag(BNTag* tag);
+	BINARYNINJACOREAPI void BNFreeTagList(BNTag** tags, size_t count);
 	BINARYNINJACOREAPI BNTagType* BNTagGetType(BNTag* tag);
 	BINARYNINJACOREAPI void BNTagSetType(BNTag* tag, BNTagType* type);
 	BINARYNINJACOREAPI char* BNTagGetData(BNTag* tag);

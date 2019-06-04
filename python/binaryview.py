@@ -896,6 +896,86 @@ class AddressRange(object):
 		self._end = value
 
 
+class TagType(object):
+	def __init__(self, handle):
+		self.handle = core.handle_of_type(handle, core.BNTagType)
+
+	@property
+	def name(self):
+		return core.BNTagTypeGetName(self.handle)
+
+	@name.setter
+	def name(self, value):
+		core.BNTagTypeSetName(self.handle, value)
+
+	@property
+	def icon(self):
+		return core.BNTagTypeGetIcon(self.handle)
+
+	@icon.setter
+	def icon(self, value):
+		core.BNTagTypeSetIcon(self.handle, value)
+
+	def __del__(self):
+		core.BNFreeTagType(self.handle)
+
+	def __eq__(self, other):
+		if not isinstance(other, Section):
+			return False
+		return ctypes.addressof(self.handle.contents) == ctypes.addressof(other.handle.contents)
+
+	def __ne__(self, other):
+		if not isinstance(other, Section):
+			return False
+		return ctypes.addressof(self.handle.contents) != ctypes.addressof(other.handle.contents)
+
+	def __hash__(self):
+		return hash(self.handle.contents)
+
+	def __repr__(self):
+		return "<tag type %s: %s>" % (self.name, self.icon)
+
+
+class Tag(object):
+	def __init__(self, handle):
+		self.handle = core.handle_of_type(handle, core.BNTag)
+
+	@property
+	def type(self):
+		return TagType(core.BNTagGetType(self.handle))
+
+	@type.setter
+	def type(self, value):
+		core.BNTagSetType(self.handle, value.handle)
+
+	@property
+	def data(self):
+		return core.BNTagGetData(self.handle)
+
+	@data.setter
+	def data(self, value):
+		core.BNTagSetData(self.handle, value)
+
+	def __del__(self):
+		core.BNFreeTag(self.handle)
+
+	def __eq__(self, other):
+		if not isinstance(other, Section):
+			return False
+		return ctypes.addressof(self.handle.contents) == ctypes.addressof(other.handle.contents)
+
+	def __ne__(self, other):
+		if not isinstance(other, Section):
+			return False
+		return ctypes.addressof(self.handle.contents) != ctypes.addressof(other.handle.contents)
+
+	def __hash__(self):
+		return hash(self.handle.contents)
+
+	def __repr__(self):
+		return "<tag %s: %s>" % (self.type, self.data)
+
+
 class _BinaryViewAssociatedDataStore(associateddatastore._AssociatedDataStore):
 	_defaults = {}
 
@@ -3139,6 +3219,29 @@ class BinaryView(object):
 		:rtype: None
 		"""
 		core.BNDefineImportedFunction(self.handle, import_addr_sym.handle, func.handle)
+
+	def add_tag_type(self, tag_type):
+		core.BNAddTagType(self.handle, tag_type.handle)
+
+	def remove_tag_type(self, tag_type):
+		core.BNRemoveTagType(self.handle, tag_type.handle)
+
+	def get_tag_type(self, name):
+		return TagType(core.BNGetTagType(self.handle, name))
+
+	@property
+	def tag_types(self):
+		count = ctypes.c_ulonglong(0)
+		types = core.BNGetTagTypes(self.handle, count)
+		result = {}
+		for i in range(0, count.value):
+			tag = TagType(core.BNNewTagTypeReference(types[i]))
+			if tag.name in result:
+				result[tag.name] = [result[tag.name], tag]
+			else:
+				result[tag.name] = tag
+		core.BNFreeTagTypeList(types, count.value)
+		return result
 
 	def is_never_branch_patch_available(self, addr, arch=None):
 		"""

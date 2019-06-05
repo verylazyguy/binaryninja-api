@@ -90,6 +90,12 @@ int FlowGraphNode::GetHeight() const
 }
 
 
+int FlowGraphNode::GetMaxTags() const
+{
+	return BNGetFlowGraphNodeMaxTags(m_object);
+}
+
+
 const vector<DisassemblyTextLine>& FlowGraphNode::GetLines()
 {
 	if (m_cachedLinesValid)

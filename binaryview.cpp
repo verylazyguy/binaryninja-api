@@ -298,15 +298,23 @@ void AnalysisCompletionEvent::Cancel()
 }
 
 
+TagType::TagType()
+{
+	m_object = BNCreateTagType();
+}
+
+
 TagType::TagType(BNTagType* tagType)
 {
 	m_object = tagType;
 }
 
 
-TagType::TagType()
+TagType::TagType(const std::string& name, const std::string& icon)
 {
 	m_object = BNCreateTagType();
+	SetName(name);
+	SetIcon(icon);
 }
 
 

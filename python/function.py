@@ -30,7 +30,6 @@ from binaryninja import associateddatastore  # Required in the main scope due to
 from binaryninja import highlight
 from binaryninja import log
 from binaryninja import types
-from binaryninja import binaryview
 from binaryninja.enums import (AnalysisSkipReason, FunctionGraphType, BranchType, SymbolType, InstructionTextTokenType,
 	HighlightStandardColor, HighlightColorStyle, RegisterValueType, ImplicitRegisterExtend,
 	DisassemblyOption, IntegerDisplayType, InstructionTextTokenContext, VariableSourceType,

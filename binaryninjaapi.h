@@ -1181,8 +1181,9 @@ namespace BinaryNinja
 	class TagType: public CoreRefCountObject<BNTagType, BNNewTagTypeReference, BNFreeTagType>
 	{
 	public:
-		TagType(BNTagType* tagType);
 		TagType();
+		TagType(BNTagType* tagType);
+		TagType(const std::string& name, const std::string& icon);
 		
 		std::string GetName() const;
 		void SetName(const std::string& name);
@@ -2842,6 +2843,7 @@ namespace BinaryNinja
 		int GetY() const;
 		int GetWidth() const;
 		int GetHeight() const;
+		int GetMaxTags() const;
 
 		const std::vector<DisassemblyTextLine>& GetLines();
 		void SetLines(const std::vector<DisassemblyTextLine>& lines);

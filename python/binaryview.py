@@ -3225,13 +3225,21 @@ class BinaryView(object):
 
 	def create_tag_type(self, name, icon):
 		tag_type = TagType(core.BNCreateTagType(name, icon))
+		tag_type.name = name
+		tag_type.icon = icon
 		self.add_tag_type(tag_type)
+		return tag_type
 
 	def remove_tag_type(self, tag_type):
 		core.BNRemoveTagType(self.handle, tag_type.handle)
 
 	def get_tag_type(self, name):
 		return TagType(core.BNGetTagType(self.handle, name))
+
+	def create_tag(self, type, data):
+		tag = binaryninja.binaryview.Tag(core.BNCreateTag(type.handle))
+		tag.data = data
+		return tag
 
 	@property
 	def tag_types(self):

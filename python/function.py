@@ -1866,10 +1866,9 @@ class Function(object):
 	def create_user_address_tag(self, addr, type, data, arch=None):
 		if arch is None:
 			arch = self.arch
-		tag = binaryninja.binaryview.Tag(core.BNCreateTag(type.handle))
-		tag.data = data
-		
-		self.add_user_address_tag(arch, addr, tag)
+		tag = self.view.create_tag(type, data)
+		self.add_user_address_tag(addr, tag, arch)
+		return tag
 
 	def remove_user_address_tag(self, addr, tag, arch=None):
 		if arch is None:
@@ -1885,10 +1884,9 @@ class Function(object):
 	def create_auto_address_tag(self, addr, type, data, arch=None):
 		if arch is None:
 			arch = self.arch
-		tag = binaryninja.binaryview.Tag(core.BNCreateTag(type.handle))
-		tag.data = data
-
-		self.add_auto_address_tag(arch, addr, tag)
+		tag = self.view.create_tag(type, data)
+		self.add_auto_address_tag(addr, tag, arch)
+		return tag
 
 	def remove_auto_address_tag(self, addr, tag, arch=None):
 		if arch is None:
@@ -1916,10 +1914,9 @@ class Function(object):
 	def create_user_function_tag(self, type, data, arch=None):
 		if arch is None:
 			arch = self.arch
-		tag = binaryninja.binaryview.Tag(core.BNCreateTag(type.handle))
-		tag.data = data
-
-		self.add_user_function_tag(arch, tag)
+		tag = self.view.create_tag(type, data)
+		self.add_user_function_tag(tag, arch)
+		return tag
 
 	def remove_user_function_tag(self, tag, arch=None):
 		if arch is None:
@@ -1935,10 +1932,9 @@ class Function(object):
 	def create_auto_function_tag(self, type, data, arch=None):
 		if arch is None:
 			arch = self.arch
-		tag = binaryninja.binaryview.Tag(core.BNCreateTag(type.handle))
-		tag.data = data
-
-		self.add_auto_function_tag(arch, tag)
+		tag = self.view.create_tag(type, data)
+		self.add_auto_function_tag(tag, arch)
+		return tag
 
 	def remove_auto_function_tag(self, tag, arch=None):
 		if arch is None:

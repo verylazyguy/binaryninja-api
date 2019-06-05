@@ -3223,6 +3223,10 @@ class BinaryView(object):
 	def add_tag_type(self, tag_type):
 		core.BNAddTagType(self.handle, tag_type.handle)
 
+	def create_tag_type(self, name, icon):
+		tag_type = TagType(core.BNCreateTagType(name, icon))
+		self.add_tag_type(tag_type)
+
 	def remove_tag_type(self, tag_type):
 		core.BNRemoveTagType(self.handle, tag_type.handle)
 

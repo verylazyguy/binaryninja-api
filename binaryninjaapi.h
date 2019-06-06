@@ -1079,9 +1079,15 @@ namespace BinaryNinja
 
 	struct InstructionTextToken
 	{
+		enum
+		{
+			WidthIsByteCount = 0
+		};
+		
 		BNInstructionTextTokenType type;
 		std::string text;
 		uint64_t value;
+		uint64_t width;
 		size_t size, operand;
 		BNInstructionTextTokenContext context;
 		uint8_t confidence;
@@ -1092,10 +1098,10 @@ namespace BinaryNinja
 		InstructionTextToken(uint8_t confidence, BNInstructionTextTokenType t, const std::string& txt);
 		InstructionTextToken(BNInstructionTextTokenType type, const std::string& text, uint64_t value = 0,
 			size_t size = 0, size_t operand = BN_INVALID_OPERAND, uint8_t confidence = BN_FULL_CONFIDENCE,
-			const std::vector<std::string>& typeName={});
+			const std::vector<std::string>& typeName={}, uint64_t width = WidthIsByteCount);
 		InstructionTextToken(BNInstructionTextTokenType type, BNInstructionTextTokenContext context,
 			const std::string& text, uint64_t address, uint64_t value = 0, size_t size = 0,
-			size_t operand = BN_INVALID_OPERAND, uint8_t confidence = BN_FULL_CONFIDENCE, const std::vector<std::string>& typeName={});
+			size_t operand = BN_INVALID_OPERAND, uint8_t confidence = BN_FULL_CONFIDENCE, const std::vector<std::string>& typeName={}, uint64_t width = WidthIsByteCount);
 		InstructionTextToken(const BNInstructionTextToken& token);
 
 		InstructionTextToken WithConfidence(uint8_t conf);

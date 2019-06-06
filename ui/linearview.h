@@ -142,6 +142,10 @@ private Q_SLOTS:
 	void comment();
 	void commentAccepted();
 	void addUserXref();
+	void bookmarkAddress();
+	void bookmarkFunction();
+	void unbookmarkAddress();
+	void unbookmarkFunction();
 
 	void convertToNop();
 	void alwaysBranch();

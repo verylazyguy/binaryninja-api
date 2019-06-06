@@ -2294,7 +2294,7 @@ bool DisassemblyTextRenderer::GetDisassemblyText(uint64_t addr, size_t& len, vec
 		line.instrIndex = result[i].instrIndex;
 		line.highlight = result[i].highlight;
 		line.tokens = InstructionTextToken::ConvertAndFreeInstructionTextTokenList(result[i].tokens, result[i].count);
-		line.tags = Tag::ConvertTagList(result[i].tags, result[i].tagCount);
+		line.tags = Tag::ConvertAndFreeTagList(result[i].tags, result[i].tagCount);
 		lines.push_back(line);
 	}
 
@@ -2391,6 +2391,7 @@ void DisassemblyTextRenderer::WrapComment(DisassemblyTextLine& line, vector<Disa
 		line.instrIndex = result[i].instrIndex;
 		line.highlight = result[i].highlight;
 		line.tokens = InstructionTextToken::ConvertAndFreeInstructionTextTokenList(result[i].tokens, result[i].count);
+		line.tags = Tag::ConvertAndFreeTagList(result[i].tags, result[i].tagCount);
 		lines.push_back(line);
 	}
 

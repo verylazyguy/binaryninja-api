@@ -1427,6 +1427,7 @@ vector<DisassemblyTextLine> Function::GetTypeTokens(DisassemblySettings* setting
 		line.instrIndex = lines[i].instrIndex;
 		line.highlight = lines[i].highlight;
 		line.tokens = InstructionTextToken::ConvertInstructionTextTokenList(lines[i].tokens, lines[i].count);
+		line.tags = Tag::ConvertTagList(lines[i].tags, lines[i].tagCount);
 		result.push_back(line);
 	}
 

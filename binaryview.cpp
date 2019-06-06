@@ -398,6 +398,14 @@ std::vector<Ref<Tag>> Tag::ConvertTagList(BNTag** tags, size_t count)
 }
 
 
+std::vector<Ref<Tag>> Tag::ConvertAndFreeTagList(BNTag** tags, size_t count)
+{
+	auto result = ConvertTagList(tags, count);
+	BNFreeTagList(tags, count);
+	return result;
+}
+
+
 Segment::Segment(BNSegment* seg)
 {
 	m_object = seg;
@@ -2006,6 +2014,7 @@ vector<LinearDisassemblyLine> BinaryView::GetPreviousLinearDisassemblyLines(Line
 		line.contents.instrIndex = lines[i].contents.instrIndex;
 		line.contents.highlight = lines[i].contents.highlight;
 		line.contents.tokens = InstructionTextToken::ConvertInstructionTextTokenList(lines[i].contents.tokens, lines[i].contents.count);
+		line.contents.tags = Tag::ConvertTagList(lines[i].contents.tags, lines[i].contents.tagCount);
 		result.push_back(line);
 	}
 
@@ -2043,6 +2052,7 @@ vector<LinearDisassemblyLine> BinaryView::GetNextLinearDisassemblyLines(LinearDi
 		line.contents.instrIndex = lines[i].contents.instrIndex;
 		line.contents.highlight = lines[i].contents.highlight;
 		line.contents.tokens = InstructionTextToken::ConvertInstructionTextTokenList(lines[i].contents.tokens, lines[i].contents.count);
+		line.contents.tags = Tag::ConvertTagList(lines[i].contents.tags, lines[i].contents.tagCount);
 		result.push_back(line);
 	}
 

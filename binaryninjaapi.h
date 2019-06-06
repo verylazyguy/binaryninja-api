@@ -2613,6 +2613,7 @@ namespace BinaryNinja
 
 		static BNTag** CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count);
 		static std::vector<Ref<Tag>> ConvertTagList(BNTag** tags, size_t count);
+		static std::vector<Ref<Tag>> ConvertAndFreeTagList(BNTag** tokens, size_t count);
 	};
 
 	class FlowGraph;

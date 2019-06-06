@@ -133,6 +133,7 @@ void FlowGraphNode::SetLines(const vector<DisassemblyTextLine>& lines)
 		buf[i].highlight = lines[i].highlight;
 		buf[i].tokens = InstructionTextToken::CreateInstructionTextTokenList(lines[i].tokens);
 		buf[i].count = lines[i].tokens.size();
+		buf[i].tags = Tag::CreateTagList(lines[i].tags, &(buf[i].tagCount));
 	}
 
 	BNSetFlowGraphNodeLines(m_object, buf, lines.size());

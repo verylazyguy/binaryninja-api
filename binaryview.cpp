@@ -1814,6 +1814,84 @@ std::vector<Ref<TagType>> BinaryView::GetTagTypes()
 }
 
 
+std::vector<Ref<Tag>> BinaryView::GetAddressTags(Architecture* arch, uint64_t addr)
+{
+	size_t count;
+	BNTag** tags = BNGetAddressTags(m_object, arch->GetObject(), addr, &count);
+	
+	std::vector<Ref<Tag>> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++) {
+		result.push_back(new Tag(tags[i]));
+	}
+	
+	return result;
+}
+
+
+void BinaryView::AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNAddAutoAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+void BinaryView::RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNRemoveAutoAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+void BinaryView::AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNAddUserAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+void BinaryView::RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNRemoveUserAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+std::vector<Ref<Tag>> BinaryView::GetFunctionTags(Function* func)
+{
+	size_t count;
+	BNTag** tags = BNGetFunctionTags(m_object, func->GetObject(), &count);
+	
+	std::vector<Ref<Tag>> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++) {
+		result.push_back(new Tag(tags[i]));
+	}
+	
+	return result;
+}
+
+
+void BinaryView::AddAutoFunctionTag(Function* func, Ref<Tag> tag)
+{
+	BNAddAutoFunctionTag(m_object, func->GetObject(), tag->GetObject());
+}
+
+
+void BinaryView::RemoveAutoFunctionTag(Function* func, Ref<Tag> tag)
+{
+	BNRemoveAutoFunctionTag(m_object, func->GetObject(), tag->GetObject());
+}
+
+
+void BinaryView::AddUserFunctionTag(Function* func, Ref<Tag> tag)
+{
+	BNAddUserFunctionTag(m_object, func->GetObject(), tag->GetObject());
+}
+
+
+void BinaryView::RemoveUserFunctionTag(Function* func, Ref<Tag> tag)
+{
+	BNRemoveUserFunctionTag(m_object, func->GetObject(), tag->GetObject());
+}
+
+
 bool BinaryView::IsNeverBranchPatchAvailable(Architecture* arch, uint64_t addr)
 {
 	return BNIsNeverBranchPatchAvailable(m_object, arch->GetObject(), addr);

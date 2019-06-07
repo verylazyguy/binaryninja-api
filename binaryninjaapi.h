@@ -1197,6 +1197,22 @@ namespace BinaryNinja
 		void SetIcon(const std::string& icon);
 	};
 
+	class Tag: public CoreRefCountObject<BNTag, BNNewTagReference, BNFreeTag>
+	{
+	public:
+		Tag(BNTag* tag);
+		Tag(Ref<TagType> type);
+		
+		Ref<TagType> GetType() const;
+		void SetType(Ref<TagType> type);
+		std::string GetData() const;
+		void SetData(const std::string& data);
+		
+		static BNTag** CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count);
+		static std::vector<Ref<Tag>> ConvertTagList(BNTag** tags, size_t count);
+		static std::vector<Ref<Tag>> ConvertAndFreeTagList(BNTag** tokens, size_t count);
+	};
+
 	class Relocation;
 	class Segment: public CoreRefCountObject<BNSegment, BNNewSegmentReference, BNFreeSegment>
 	{
@@ -1468,6 +1484,18 @@ namespace BinaryNinja
 		Ref<TagType> GetTagType(const std::string& name);
 		std::vector<Ref<TagType>> GetTagTypes();
 		
+		std::vector<Ref<Tag>> GetAddressTags(Architecture* arch, uint64_t addr);
+		void AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		
+		std::vector<Ref<Tag>> GetFunctionTags(Function* func);
+		void AddAutoFunctionTag(Function* func, Ref<Tag> tag);
+		void RemoveAutoFunctionTag(Function* func, Ref<Tag> tag);
+		void AddUserFunctionTag(Function* func, Ref<Tag> tag);
+		void RemoveUserFunctionTag(Function* func, Ref<Tag> tag);
+
 		bool IsNeverBranchPatchAvailable(Architecture* arch, uint64_t addr);
 		bool IsAlwaysBranchPatchAvailable(Architecture* arch, uint64_t addr);
 		bool IsInvertBranchPatchAvailable(Architecture* arch, uint64_t addr);
@@ -2600,22 +2628,6 @@ namespace BinaryNinja
 		static PossibleValueSet FromAPIObject(BNPossibleValueSet& value);
 	};
 	
-	class Tag: public CoreRefCountObject<BNTag, BNNewTagReference, BNFreeTag>
-	{
-	public:
-		Tag(BNTag* tag);
-		Tag(Ref<TagType> type);
-		
-		Ref<TagType> GetType() const;
-		void SetType(Ref<TagType> type);
-		std::string GetData() const;
-		void SetData(const std::string& data);
-
-		static BNTag** CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count);
-		static std::vector<Ref<Tag>> ConvertTagList(BNTag** tags, size_t count);
-		static std::vector<Ref<Tag>> ConvertAndFreeTagList(BNTag** tokens, size_t count);
-	};
-
 	class FlowGraph;
 	class MediumLevelILFunction;
 
@@ -2771,18 +2783,6 @@ namespace BinaryNinja
 			BNHighlightStandardColor mixColor, uint8_t mix, uint8_t alpha = 255);
 		void SetUserInstructionHighlight(Architecture* arch, uint64_t addr, uint8_t r, uint8_t g, uint8_t b,
 			uint8_t alpha = 255);
-
-		std::vector<Ref<Tag>> GetAddressTags(Architecture* arch, uint64_t addr);
-		void AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		void RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		void AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		void RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		
-		std::vector<Ref<Tag>> GetFunctionTags(Architecture* arch);
-		void AddAutoFunctionTag(Architecture* arch, Ref<Tag> tag);
-		void RemoveAutoFunctionTag(Architecture* arch, Ref<Tag> tag);
-		void AddUserFunctionTag(Architecture* arch, Ref<Tag> tag);
-		void RemoveUserFunctionTag(Architecture* arch, Ref<Tag> tag);
 
 		void Reanalyze();
 

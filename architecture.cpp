@@ -49,7 +49,7 @@ void InstructionInfo::AddBranch(BNBranchType type, uint64_t target, Architecture
 }
 
 
-InstructionTextToken::InstructionTextToken(): type(TextToken), value(0), confidence(BN_FULL_CONFIDENCE), width(WidthIsByteCount)
+InstructionTextToken::InstructionTextToken(): type(TextToken), value(0), width(WidthIsByteCount), confidence(BN_FULL_CONFIDENCE)
 {
 	if (width == WidthIsByteCount)
 	{
@@ -59,8 +59,8 @@ InstructionTextToken::InstructionTextToken(): type(TextToken), value(0), confide
 
 
 InstructionTextToken::InstructionTextToken(BNInstructionTextTokenType t, const std::string& txt, uint64_t val,
-	size_t s, size_t o, uint8_t c, const vector<string>& n, uint64_t w) : type(t), text(txt), value(val), size(s), operand(o), context(NoTokenContext),
-	confidence(c), address(0), typeNames(n), width(w)
+	size_t s, size_t o, uint8_t c, const vector<string>& n, uint64_t w) : type(t), text(txt), value(val), width(w), size(s), operand(o),
+	context(NoTokenContext), confidence(c), address(0), typeNames(n)
 {
 	if (width == WidthIsByteCount)
 	{
@@ -71,7 +71,7 @@ InstructionTextToken::InstructionTextToken(BNInstructionTextTokenType t, const s
 
 InstructionTextToken::InstructionTextToken(BNInstructionTextTokenType t, BNInstructionTextTokenContext ctxt,
 	const string& txt, uint64_t a, uint64_t val, size_t s, size_t o, uint8_t c, const vector<string>& n, uint64_t w):
-	type(t), text(txt), value(val), size(s), operand(o), context(ctxt), confidence(c), address(a), typeNames(n), width(w)
+	type(t), text(txt), value(val), width(w), size(s), operand(o), context(ctxt), confidence(c), address(a), typeNames(n)
 {
 	if (width == WidthIsByteCount)
 	{
@@ -81,8 +81,8 @@ InstructionTextToken::InstructionTextToken(BNInstructionTextTokenType t, BNInstr
 
 
 InstructionTextToken::InstructionTextToken(const BNInstructionTextToken& token):
-	type(token.type), text(token.text), value(token.value), size(token.size), operand(token.operand),
-	context(token.context), confidence(token.confidence), address(token.address), width(token.width)
+	type(token.type), text(token.text), value(token.value), width(token.width), size(token.size),
+	operand(token.operand), context(token.context), confidence(token.confidence), address(token.address)
 {
 	typeNames.reserve(token.namesCount);
 	for (size_t j = 0; j < token.namesCount; j++)

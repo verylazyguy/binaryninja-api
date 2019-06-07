@@ -1484,11 +1484,11 @@ namespace BinaryNinja
 		Ref<TagType> GetTagType(const std::string& name);
 		std::vector<Ref<TagType>> GetTagTypes();
 		
-		std::vector<Ref<Tag>> GetAddressTags(Architecture* arch, uint64_t addr);
-		void AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		void RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		void AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
-		void RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		std::vector<Ref<Tag>> GetAddressTags(uint64_t addr);
+		void AddAutoAddressTag(uint64_t addr, Ref<Tag> tag);
+		void RemoveAutoAddressTag(uint64_t addr, Ref<Tag> tag);
+		void AddUserAddressTag(uint64_t addr, Ref<Tag> tag);
+		void RemoveUserAddressTag(uint64_t addr, Ref<Tag> tag);
 		
 		std::vector<Ref<Tag>> GetFunctionTags(Function* func);
 		void AddAutoFunctionTag(Function* func, Ref<Tag> tag);

@@ -2902,11 +2902,11 @@ extern "C"
 	BINARYNINJACOREAPI char* BNTagGetData(BNTag* tag);
 	BINARYNINJACOREAPI void BNTagSetData(BNTag* tag, const char* data);
 	
-	BINARYNINJACOREAPI BNTag** BNGetAddressTags(BNBinaryView* view, BNArchitecture* arch, uint64_t addr, size_t* count);
-	BINARYNINJACOREAPI void BNAddAutoAddressTag(BNBinaryView* view, BNArchitecture* arch, uint64_t addr, BNTag* tag);
-	BINARYNINJACOREAPI void BNRemoveAutoAddressTag(BNBinaryView* view, BNArchitecture* arch, uint64_t addr, BNTag* tag);
-	BINARYNINJACOREAPI void BNAddUserAddressTag(BNBinaryView* view, BNArchitecture* arch, uint64_t addr, BNTag* tag);
-	BINARYNINJACOREAPI void BNRemoveUserAddressTag(BNBinaryView* view, BNArchitecture* arch, uint64_t addr, BNTag* tag);
+	BINARYNINJACOREAPI BNTag** BNGetAddressTags(BNBinaryView* view, uint64_t addr, size_t* count);
+	BINARYNINJACOREAPI void BNAddAutoAddressTag(BNBinaryView* view, uint64_t addr, BNTag* tag);
+	BINARYNINJACOREAPI void BNRemoveAutoAddressTag(BNBinaryView* view, uint64_t addr, BNTag* tag);
+	BINARYNINJACOREAPI void BNAddUserAddressTag(BNBinaryView* view, uint64_t addr, BNTag* tag);
+	BINARYNINJACOREAPI void BNRemoveUserAddressTag(BNBinaryView* view, uint64_t addr, BNTag* tag);
 	
 	BINARYNINJACOREAPI BNTag** BNGetFunctionTags(BNBinaryView* view, BNFunction* func, size_t* count);
 	BINARYNINJACOREAPI void BNAddAutoFunctionTag(BNBinaryView* view, BNFunction* func, BNTag* tag);

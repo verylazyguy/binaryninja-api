@@ -3241,73 +3241,48 @@ class BinaryView(object):
 		tag.data = data
 		return tag
 
-	def address_tags(self, addr, arch=None):
-		if arch is None:
-			arch = self.arch
-
+	def address_tags(self, addr):
 		count = ctypes.c_ulonglong()
-		tags = core.BNGetAddressTags(self.handle, arch.handle, addr, count)
+		tags = core.BNGetAddressTags(self.handle, addr, count)
 		result = []
 		for i in range(0, count.value):
 			result.append(Tag(core.BNNewTagReference(tags[i])))
 		core.BNFreeTagList(tags, count.value)
 		return result
 
-	def add_user_address_tag(self, addr, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		core.BNAddUserAddressTag(self.handle, arch.handle, addr, tag.handle)
+	def add_user_address_tag(self, addr, tag):
+		core.BNAddUserAddressTag(self.handle, addr, tag.handle)
 
-	def remove_user_address_tag(self, addr, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		
-		core.BNRemoveUserAddressTag(self.handle, arch.handle, addr, tag.handle)
+	def remove_user_address_tag(self, addr, tag):
+		core.BNRemoveUserAddressTag(self.handle, addr, tag.handle)
 
-	def add_auto_address_tag(self, addr, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		core.BNAddAutoAddressTag(self.handle, arch.handle, addr, tag.handle)
+	def add_auto_address_tag(self, addr, tag):
+		core.BNAddAutoAddressTag(self.handle, addr, tag.handle)
 
-	def remove_auto_address_tag(self, addr, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		
-		core.BNRemoveAutoAddressTag(self.handle, arch.handle, addr, tag.handle)
+	def remove_auto_address_tag(self, addr, tag):
+		core.BNRemoveAutoAddressTag(self.handle, addr, tag.handle)
 
-	def function_tags(self, arch=None):
-		if arch is None:
-			arch = self.arch
+	def function_tags(self):
 
 		count = ctypes.c_ulonglong()
-		tags = core.BNGetFunctionTags(self.handle, arch.handle, count)
+		tags = core.BNGetFunctionTags(self.handle, count)
 		result = []
 		for i in range(0, count.value):
 			result.append(Tag(core.BNNewTagReference(tags[i])))
 		core.BNFreeTagList(tags, count.value)
 		return result
 
-	def add_user_function_tag(self, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		core.BNAddUserFunctionTag(self.handle, arch.handle, tag.handle)
+	def add_user_function_tag(self, tag):
+		core.BNAddUserFunctionTag(self.handle, tag.handle)
 
-	def remove_user_function_tag(self, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		
-		core.BNRemoveUserFunctionTag(self.handle, arch.handle, tag.handle)
+	def remove_user_function_tag(self, tag):
+		core.BNRemoveUserFunctionTag(self.handle, tag.handle)
 
-	def add_auto_function_tag(self, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		core.BNAddAutoFunctionTag(self.handle, arch.handle, tag.handle)
+	def add_auto_function_tag(self, tag):
+		core.BNAddAutoFunctionTag(self.handle, tag.handle)
 
-	def remove_auto_function_tag(self, tag, arch=None):
-		if arch is None:
-			arch = self.arch
-		
-		core.BNRemoveAutoFunctionTag(self.handle, arch.handle, tag.handle)
+	def remove_auto_function_tag(self, tag):
+		core.BNRemoveAutoFunctionTag(self.handle, tag.handle)
 
 	@property
 	def tag_types(self):

@@ -1814,10 +1814,10 @@ std::vector<Ref<TagType>> BinaryView::GetTagTypes()
 }
 
 
-std::vector<Ref<Tag>> BinaryView::GetAddressTags(Architecture* arch, uint64_t addr)
+std::vector<Ref<Tag>> BinaryView::GetAddressTags(uint64_t addr)
 {
 	size_t count;
-	BNTag** tags = BNGetAddressTags(m_object, arch->GetObject(), addr, &count);
+	BNTag** tags = BNGetAddressTags(m_object, addr, &count);
 	
 	std::vector<Ref<Tag>> result;
 	result.reserve(count);
@@ -1829,27 +1829,27 @@ std::vector<Ref<Tag>> BinaryView::GetAddressTags(Architecture* arch, uint64_t ad
 }
 
 
-void BinaryView::AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+void BinaryView::AddAutoAddressTag(uint64_t addr, Ref<Tag> tag)
 {
-	BNAddAutoAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+	BNAddAutoAddressTag(m_object, addr, tag->GetObject());
 }
 
 
-void BinaryView::RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+void BinaryView::RemoveAutoAddressTag(uint64_t addr, Ref<Tag> tag)
 {
-	BNRemoveAutoAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+	BNRemoveAutoAddressTag(m_object, addr, tag->GetObject());
 }
 
 
-void BinaryView::AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+void BinaryView::AddUserAddressTag(uint64_t addr, Ref<Tag> tag)
 {
-	BNAddUserAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+	BNAddUserAddressTag(m_object, addr, tag->GetObject());
 }
 
 
-void BinaryView::RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+void BinaryView::RemoveUserAddressTag(uint64_t addr, Ref<Tag> tag)
 {
-	BNRemoveUserAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+	BNRemoveUserAddressTag(m_object, addr, tag->GetObject());
 }
 
 

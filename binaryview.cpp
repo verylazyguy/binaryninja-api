@@ -156,6 +156,33 @@ void BinaryDataNotification::TypeUndefinedCallback(void* ctxt, BNBinaryView* dat
 }
 
 
+void BinaryDataNotification::TagAddedCallback(void* ctxt, BNBinaryView* data, BNTag* tag)
+{
+	BinaryDataNotification* notify = (BinaryDataNotification*)ctxt;
+	Ref<BinaryView> view = new BinaryView(BNNewViewReference(data));
+	Ref<Tag> tagObj = new Tag(BNNewTagReference(tag));
+	notify->OnTagAdded(view, tagObj);
+}
+
+
+void BinaryDataNotification::TagRemovedCallback(void* ctxt, BNBinaryView* data, BNTag* tag)
+{
+	BinaryDataNotification* notify = (BinaryDataNotification*)ctxt;
+	Ref<BinaryView> view = new BinaryView(BNNewViewReference(data));
+	Ref<Tag> tagObj = new Tag(BNNewTagReference(tag));
+	notify->OnTagRemoved(view, tagObj);
+}
+
+
+void BinaryDataNotification::TagUpdatedCallback(void* ctxt, BNBinaryView* data, BNTag* tag)
+{
+	BinaryDataNotification* notify = (BinaryDataNotification*)ctxt;
+	Ref<BinaryView> view = new BinaryView(BNNewViewReference(data));
+	Ref<Tag> tagObj = new Tag(BNNewTagReference(tag));
+	notify->OnTagUpdated(view, tagObj);
+}
+
+
 BinaryDataNotification::BinaryDataNotification()
 {
 	m_callbacks.context = this;
@@ -174,6 +201,9 @@ BinaryDataNotification::BinaryDataNotification()
 	m_callbacks.stringRemoved = StringRemovedCallback;
 	m_callbacks.typeDefined = TypeDefinedCallback;
 	m_callbacks.typeUndefined = TypeUndefinedCallback;
+	m_callbacks.tagAdded = TagAddedCallback;
+	m_callbacks.tagRemoved = TagRemovedCallback;
+	m_callbacks.tagUpdated = TagUpdatedCallback;
 }
 
 

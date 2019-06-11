@@ -877,6 +877,7 @@ namespace BinaryNinja
 
 	class Function;
 	struct DataVariable;
+	class Tag;
 
 	class BinaryDataNotification
 	{
@@ -898,6 +899,9 @@ namespace BinaryNinja
 		static void StringRemovedCallback(void* ctxt, BNBinaryView* data, BNStringType type, uint64_t offset, size_t len);
 		static void TypeDefinedCallback(void* ctxt, BNBinaryView* data, BNQualifiedName* name, BNType* type);
 		static void TypeUndefinedCallback(void* ctxt, BNBinaryView* data, BNQualifiedName* name, BNType* type);
+		static void TagAddedCallback(void* ctxt, BNBinaryView* data, BNTag* tag);
+		static void TagRemovedCallback(void* ctxt, BNBinaryView* data, BNTag* tag);
+		static void TagUpdatedCallback(void* ctxt, BNBinaryView* data, BNTag* tag);
 
 	public:
 		BinaryDataNotification();
@@ -920,6 +924,9 @@ namespace BinaryNinja
 		virtual void OnStringRemoved(BinaryView* data, BNStringType type, uint64_t offset, size_t len) { (void)data; (void)type; (void)offset; (void)len; }
 		virtual void OnTypeDefined(BinaryView* data, const QualifiedName& name, Type* type) { (void)data; (void)name; (void)type; }
 		virtual void OnTypeUndefined(BinaryView* data, const QualifiedName& name, Type* type) { (void)data; (void)name; (void)type; }
+		virtual void OnTagAdded(BinaryView* data, Ref<Tag> tag) { (void)data; (void)tag; }
+		virtual void OnTagRemoved(BinaryView* data, Ref<Tag> tag) { (void)data; (void)tag; }
+		virtual void OnTagUpdated(BinaryView* data, Ref<Tag> tag) { (void)data; (void)tag; }
 	};
 
 	class FileAccessor

@@ -378,7 +378,7 @@ void Tag::SetData(const std::string& data)
 }
 
 
-BNTag** Tag::CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count)
+BNTag** Tag::CreateTagList(const std::vector<Tag*>& tags, size_t* count)
 {
 	*count = tags.size();
 	BNTag** result = new BNTag*[tags.size()];
@@ -388,17 +388,17 @@ BNTag** Tag::CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count)
 }
 
 
-std::vector<Ref<Tag>> Tag::ConvertTagList(BNTag** tags, size_t count)
+std::vector<Tag*> Tag::ConvertTagList(BNTag** tags, size_t count)
 {
-	std::vector<Ref<Tag>> result;
+	std::vector<Tag*> result;
 	result.reserve(count);
 	for (size_t i = 0; i < count; i++)
-		result.emplace_back(new Tag(tags[i]));
+		result.push_back(new Tag(tags[i]));
 	return result;
 }
 
 
-std::vector<Ref<Tag>> Tag::ConvertAndFreeTagList(BNTag** tags, size_t count)
+std::vector<Tag*> Tag::ConvertAndFreeTagList(BNTag** tags, size_t count)
 {
 	auto result = ConvertTagList(tags, count);
 	BNFreeTagList(tags, count);

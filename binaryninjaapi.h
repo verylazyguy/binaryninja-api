@@ -1119,7 +1119,7 @@ namespace BinaryNinja
 		size_t instrIndex;
 		std::vector<InstructionTextToken> tokens;
 		BNHighlightColor highlight;
-		std::vector<Ref<Tag>> tags;
+		std::vector<Tag*> tags;
 
 		DisassemblyTextLine();
 	};
@@ -1209,9 +1209,9 @@ namespace BinaryNinja
 		std::string GetData() const;
 		void SetData(const std::string& data);
 		
-		static BNTag** CreateTagList(const std::vector<Ref<Tag>>& tags, size_t* count);
-		static std::vector<Ref<Tag>> ConvertTagList(BNTag** tags, size_t count);
-		static std::vector<Ref<Tag>> ConvertAndFreeTagList(BNTag** tokens, size_t count);
+		static BNTag** CreateTagList(const std::vector<Tag*>& tags, size_t* count);
+		static std::vector<Tag*> ConvertTagList(BNTag** tags, size_t count);
+		static std::vector<Tag*> ConvertAndFreeTagList(BNTag** tokens, size_t count);
 	};
 
 	class Relocation;

@@ -1072,9 +1072,6 @@ extern "C"
 		void (*stringRemoved)(void* ctxt, BNBinaryView* view, BNStringType type, uint64_t offset, size_t len);
 		void (*typeDefined)(void* ctxt, BNBinaryView* view, BNQualifiedName* name, BNType* type);
 		void (*typeUndefined)(void* ctxt, BNBinaryView* view, BNQualifiedName* name, BNType* type);
-		void (*tagAdded)(void* ctxt, BNBinaryView* view, BNTag* tag);
-		void (*tagRemoved)(void* ctxt, BNBinaryView* view, BNTag* tag);
-		void (*tagUpdated)(void* ctxt, BNBinaryView* view, BNTag* tag);
 	};
 
 	struct BNFileAccessor

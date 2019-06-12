@@ -93,9 +93,7 @@ protected:
 	virtual void wheelEvent(QWheelEvent* e) override;
 	void goToReference(const QModelIndex& idx);
 	
-	virtual void OnTagAdded(BinaryNinja::BinaryView* data, BinaryNinja::Ref<BinaryNinja::Tag> tag) override;
-	virtual void OnTagRemoved(BinaryNinja::BinaryView* data, BinaryNinja::Ref<BinaryNinja::Tag> tag) override;
-	virtual void OnTagUpdated(BinaryNinja::BinaryView* data, BinaryNinja::Ref<BinaryNinja::Tag> tag) override;
+	virtual void OnDataMetadataUpdated(BinaryNinja::BinaryView*, uint64_t) override;
 
 private Q_SLOTS:
 	void hoverTimerEvent();

@@ -1279,6 +1279,120 @@ void Function::SetUserInstructionHighlight(Architecture* arch, uint64_t addr, ui
 }
 
 
+std::vector<TagReference> Function::GetAddressTagReferences()
+{
+	size_t count;
+	BNTagReference* refs = BNGetFunctionAddressTagReferences(m_object, &count);
+
+	std::vector<TagReference> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++)
+	{
+		result.emplace_back(refs[i]);
+	}
+
+	BNFreeTagReferences(refs, count);
+
+	return result;
+}
+
+
+std::vector<Ref<Tag>> Function::GetAddressTags(Architecture* arch, uint64_t addr)
+{
+	size_t count;
+	BNTag** tags = BNGetFunctionAddressTags(m_object, arch->GetObject(), addr, &count);
+
+	std::vector<Ref<Tag>> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++) {
+		result.push_back(new Tag(tags[i]));
+	}
+	
+	return result;
+}
+
+
+void Function::AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNAddFunctionAutoAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+void Function::RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNRemoveFunctionAutoAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+void Function::AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNAddFunctionUserAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+void Function::RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag)
+{
+	BNRemoveFunctionUserAddressTag(m_object, arch->GetObject(), addr, tag->GetObject());
+}
+
+
+std::vector<TagReference> Function::GetFunctionTagReferences()
+{
+	size_t count;
+	BNTagReference* refs = BNGetFunctionFunctionTagReferences(m_object, &count);
+
+	std::vector<TagReference> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++)
+	{
+		result.emplace_back(refs[i]);
+	}
+
+	BNFreeTagReferences(refs, count);
+
+	return result;
+}
+
+
+std::vector<Ref<Tag>> Function::GetFunctionTags()
+{
+	size_t count;
+	BNTag** tags = BNGetFunctionFunctionTags(m_object, &count);
+	
+	std::vector<Ref<Tag>> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++) {
+		result.push_back(new Tag(tags[i]));
+	}
+	
+	return result;
+}
+
+
+void Function::AddAutoFunctionTag(Ref<Tag> tag)
+{
+	BNAddFunctionAutoFunctionTag(m_object, tag->GetObject());
+}
+
+
+void Function::RemoveAutoFunctionTag(Ref<Tag> tag)
+{
+	BNRemoveFunctionAutoFunctionTag(m_object, tag->GetObject());
+}
+
+
+void Function::AddUserFunctionTag(Ref<Tag> tag)
+{
+	BNAddFunctionUserFunctionTag(m_object, tag->GetObject());
+}
+
+
+void Function::RemoveUserFunctionTag(Ref<Tag> tag)
+{
+	BNRemoveFunctionUserFunctionTag(m_object, tag->GetObject());
+}
+
+
 Confidence<RegisterValue> Function::GetGlobalPointerValue() const
 {
 	BNRegisterValueWithConfidence value = BNGetFunctionGlobalPointerValue(m_object);

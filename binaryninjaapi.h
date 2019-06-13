@@ -1500,15 +1500,17 @@ namespace BinaryNinja
 		void RemoveTagType(Ref<TagType> tagType);
 		Ref<TagType> GetTagType(const std::string& name);
 		std::vector<Ref<TagType>> GetTagTypes();
-		
-		std::vector<TagReference> GetAddressTags();
+
+		std::vector<TagReference> GetAllTagReferences();
+
+		std::vector<TagReference> GetAddressTagReferences();
 		std::vector<Ref<Tag>> GetAddressTags(uint64_t addr);
 		void AddAutoAddressTag(uint64_t addr, Ref<Tag> tag);
 		void RemoveAutoAddressTag(uint64_t addr, Ref<Tag> tag);
 		void AddUserAddressTag(uint64_t addr, Ref<Tag> tag);
 		void RemoveUserAddressTag(uint64_t addr, Ref<Tag> tag);
 		
-		std::vector<TagReference> GetFunctionTags();
+		std::vector<TagReference> GetFunctionTagReferences();
 		std::vector<Ref<Tag>> GetFunctionTags(Function* func);
 		void AddAutoFunctionTag(Function* func, Ref<Tag> tag);
 		void RemoveAutoFunctionTag(Function* func, Ref<Tag> tag);
@@ -2802,6 +2804,20 @@ namespace BinaryNinja
 			BNHighlightStandardColor mixColor, uint8_t mix, uint8_t alpha = 255);
 		void SetUserInstructionHighlight(Architecture* arch, uint64_t addr, uint8_t r, uint8_t g, uint8_t b,
 			uint8_t alpha = 255);
+
+		std::vector<TagReference> GetAddressTagReferences();
+		std::vector<Ref<Tag>> GetAddressTags(Architecture* arch, uint64_t addr);
+		void AddAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void RemoveAutoAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void AddUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		void RemoveUserAddressTag(Architecture* arch, uint64_t addr, Ref<Tag> tag);
+		
+		std::vector<TagReference> GetFunctionTagReferences();
+		std::vector<Ref<Tag>> GetFunctionTags();
+		void AddAutoFunctionTag(Ref<Tag> tag);
+		void RemoveAutoFunctionTag(Ref<Tag> tag);
+		void AddUserFunctionTag(Ref<Tag> tag);
+		void RemoveUserFunctionTag(Ref<Tag> tag);
 
 		void Reanalyze();
 

@@ -1833,7 +1833,25 @@ std::vector<Ref<TagType>> BinaryView::GetTagTypes()
 }
 
 
-std::vector<TagReference> BinaryView::GetAddressTags()
+std::vector<TagReference> BinaryView::GetAllTagReferences()
+{
+	size_t count;
+	BNTagReference* refs = BNGetAllTagReferences(m_object, &count);
+
+	std::vector<TagReference> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++)
+	{
+		result.emplace_back(refs[i]);
+	}
+
+	BNFreeTagReferences(refs, count);
+
+	return result;
+}
+
+
+std::vector<TagReference> BinaryView::GetAddressTagReferences()
 {
 	size_t count;
 	BNTagReference* refs = BNGetAddressTagReferences(m_object, &count);
@@ -1845,7 +1863,7 @@ std::vector<TagReference> BinaryView::GetAddressTags()
 		result.emplace_back(refs[i]);
 	}
 
-	BNFreeAddressTagReferences(refs, count);
+	BNFreeTagReferences(refs, count);
 
 	return result;
 }
@@ -1891,7 +1909,7 @@ void BinaryView::RemoveUserAddressTag(uint64_t addr, Ref<Tag> tag)
 }
 
 
-std::vector<TagReference> BinaryView::GetFunctionTags()
+std::vector<TagReference> BinaryView::GetFunctionTagReferences()
 {
 	size_t count;
 	BNTagReference* refs = BNGetFunctionTagReferences(m_object, &count);
@@ -1903,7 +1921,7 @@ std::vector<TagReference> BinaryView::GetFunctionTags()
 		result.emplace_back(refs[i]);
 	}
 
-	BNFreeFunctionTagReferences(refs, count);
+	BNFreeTagReferences(refs, count);
 
 	return result;
 }

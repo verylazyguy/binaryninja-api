@@ -73,8 +73,6 @@ class BINARYNINJAUIAPI TokenizedTextView: public QAbstractScrollArea, public Vie
 	void reanalyze();
 	void comment();
 	void commentAccepted();
-	void bookmarkAddress();
-	void bookmarkFunction();
 
 	void convertToNop();
 	void alwaysBranch();

@@ -1390,6 +1390,7 @@ extern "C"
 	{
 		BNTagReferenceType refType;
 		BNTag* tag;
+		BNArchitecture* arch;
 		BNFunction* func;
 		uint64_t addr;
 	};

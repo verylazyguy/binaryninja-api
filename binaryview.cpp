@@ -406,6 +406,24 @@ std::vector<Tag*> Tag::ConvertAndFreeTagList(BNTag** tags, size_t count)
 }
 
 
+TagReference::TagReference()
+{
+}
+
+
+TagReference::TagReference(const BNTagReference& ref)
+{
+	refType = ref.refType;
+	if (ref.tag)
+		tag = new Tag(BNNewTagReference(ref.tag));
+	if (ref.arch)
+		arch = new CoreArchitecture(ref.arch);
+	if (ref.func)
+		func = new Function(BNNewFunctionReference(ref.func));
+	addr = ref.addr;
+}
+
+
 Segment::Segment(BNSegment* seg)
 {
 	m_object = seg;
@@ -1815,6 +1833,24 @@ std::vector<Ref<TagType>> BinaryView::GetTagTypes()
 }
 
 
+std::vector<TagReference> BinaryView::GetAddressTags()
+{
+	size_t count;
+	BNTagReference* refs = BNGetAddressTagReferences(m_object, &count);
+
+	std::vector<TagReference> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++)
+	{
+		result.emplace_back(refs[i]);
+	}
+
+	BNFreeAddressTagReferences(refs, count);
+
+	return result;
+}
+
+
 std::vector<Ref<Tag>> BinaryView::GetAddressTags(uint64_t addr)
 {
 	size_t count;
@@ -1826,26 +1862,6 @@ std::vector<Ref<Tag>> BinaryView::GetAddressTags(uint64_t addr)
 	{
 		result.push_back(new Tag(tags[i]));
 	}
-	
-	return result;
-}
-
-
-std::vector<std::pair<uint64_t, Ref<Tag>>> BinaryView::GetAddressTags()
-{
-	size_t count;
-	BNTagReference* refs = BNGetAddressTagReferences(m_object, &count);
-	
-	std::vector<std::pair<uint64_t, Ref<Tag>>> result;
-	result.reserve(count);
-	for (size_t i = 0; i < count; i ++)
-	{
-		uint64_t addr = refs[i].addr;
-		Ref<Tag> tag = new Tag(refs[i].tag);
-		result.push_back(std::make_pair(addr, tag));
-	}
-	
-	BNFreeAddressTagReferences(refs, count);
 	
 	return result;
 }
@@ -1875,6 +1891,24 @@ void BinaryView::RemoveUserAddressTag(uint64_t addr, Ref<Tag> tag)
 }
 
 
+std::vector<TagReference> BinaryView::GetFunctionTags()
+{
+	size_t count;
+	BNTagReference* refs = BNGetFunctionTagReferences(m_object, &count);
+
+	std::vector<TagReference> result;
+	result.reserve(count);
+	for (size_t i = 0; i < count; i ++)
+	{
+		result.emplace_back(refs[i]);
+	}
+
+	BNFreeFunctionTagReferences(refs, count);
+
+	return result;
+}
+
+
 std::vector<Ref<Tag>> BinaryView::GetFunctionTags(Function* func)
 {
 	size_t count;
@@ -1886,26 +1920,6 @@ std::vector<Ref<Tag>> BinaryView::GetFunctionTags(Function* func)
 	{
 		result.push_back(new Tag(tags[i]));
 	}
-	
-	return result;
-}
-
-
-std::vector<std::pair<Ref<Function>, Ref<Tag>>> BinaryView::GetFunctionTags()
-{
-	size_t count;
-	BNTagReference* refs = BNGetFunctionTagReferences(m_object, &count);
-	
-	std::vector<std::pair<Ref<Function>, Ref<Tag>>> result;
-	result.reserve(count);
-	for (size_t i = 0; i < count; i ++)
-	{
-		Ref<Function> func = new Function(refs[i].func);
-		Ref<Tag> tag = new Tag(refs[i].tag);
-		result.push_back(std::make_pair(func, tag));
-	}
-	
-	BNFreeFunctionTagReferences(refs, count);
 	
 	return result;
 }

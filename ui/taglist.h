@@ -9,29 +9,13 @@
 #include "viewframe.h"
 
 
-struct BINARYNINJAUIAPI TagReference
-{
-	enum RefType
-	{
-		AddressTagRef,
-		FunctionTagRef
-	};
-	
-	TagRef tag;
-	ArchitectureRef arch;
-	FunctionRef func;
-	RefType refType;
-	uint64_t addr;
-};
-
-
 class BINARYNINJAUIAPI TagListModel: public QAbstractItemModel
 {
 	Q_OBJECT
 
 	QWidget* m_owner;
 	BinaryViewRef m_data;
-	std::vector<TagReference> m_refs;
+	std::vector<BinaryNinja::TagReference> m_refs;
 
 public:
 	TagListModel(QWidget* parent, BinaryViewRef data);
@@ -43,7 +27,7 @@ public:
 	virtual int columnCount(const QModelIndex& parent) const override;
 	virtual QVariant data(const QModelIndex& i, int role) const override;
 
-	bool setModelData(const std::vector<TagReference>& refs, QItemSelectionModel* selectionModel, bool& selectionUpdated);
+	bool setModelData(const std::vector<BinaryNinja::TagReference>& refs, QItemSelectionModel* selectionModel, bool& selectionUpdated);
 };
 
 
